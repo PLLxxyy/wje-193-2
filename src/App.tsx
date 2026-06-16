@@ -21,11 +21,16 @@ export default function App() {
     [selectedEquipmentId],
   )
 
+  const handleClearSelection = useCallback(() => {
+    setSelectedEquipmentId(null)
+    setCameraTarget(null)
+    setAlertFilterId(null)
+  }, [])
+
   const handleSelectEquipment = useCallback(
     (id: string) => {
       if (selectedEquipmentId === id) {
-        setSelectedEquipmentId(null)
-        setCameraTarget(null)
+        handleClearSelection()
         return
       }
       setSelectedEquipmentId(id)
@@ -48,7 +53,7 @@ export default function App() {
         setCameraTarget({ x: p.x, y: t.y, z: p.z })
       }
     },
-    [selectedEquipmentId, snapshot],
+    [selectedEquipmentId, snapshot, handleClearSelection],
   )
 
   const handleCameraArrive = useCallback(() => {
@@ -83,10 +88,7 @@ export default function App() {
         <EquipmentDetail
           equipment={selectedEquipment}
           alerts={alertList}
-          onClose={() => {
-            setSelectedEquipmentId(null)
-            setCameraTarget(null)
-          }}
+          onClose={handleClearSelection}
         />
       )}
     </div>
