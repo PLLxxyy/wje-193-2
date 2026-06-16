@@ -11,6 +11,7 @@ export default function App() {
   const [dayIndex, setDayIndex] = useState(6)
   const [selectedEquipmentId, setSelectedEquipmentId] = useState<string | null>(null)
   const [cameraTarget, setCameraTarget] = useState<{ x: number; y: number; z: number } | null>(null)
+  const [alertFilterId, setAlertFilterId] = useState<string | null>(null)
 
   const snapshot = weekData[dayIndex]
   const dates = useMemo(() => weekData.map((d) => d.date), [])
@@ -28,6 +29,7 @@ export default function App() {
         return
       }
       setSelectedEquipmentId(id)
+      setAlertFilterId(id)
       const eq = equipmentList.find((e) => e.id === id)
       if (!eq) return
       const terraces = snapshot.terraces
@@ -68,12 +70,19 @@ export default function App() {
         equipment={equipmentList}
         selectedId={selectedEquipmentId}
         onSelect={handleSelectEquipment}
+        alerts={alertList}
       />
       <TimelineSlider dates={dates} currentIndex={dayIndex} onChange={setDayIndex} />
-      <SafetyPanel alerts={alertList} />
+      <SafetyPanel
+        alerts={alertList}
+        equipment={equipmentList}
+        filterEquipmentId={alertFilterId}
+        onFilterChange={setAlertFilterId}
+      />
       {selectedEquipment && (
         <EquipmentDetail
           equipment={selectedEquipment}
+          alerts={alertList}
           onClose={() => {
             setSelectedEquipmentId(null)
             setCameraTarget(null)

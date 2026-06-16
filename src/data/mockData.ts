@@ -37,6 +37,8 @@ export interface Alert {
   value: string
   time: string
   location: string
+  equipmentId: string | null
+  resolved: boolean
 }
 
 export interface DaySnapshot {
@@ -144,36 +146,61 @@ export const alertList: Alert[] = [
     id: 'a1', type: 'critical', category: '边坡位移',
     message: '北侧边坡3号监测点位移速率超标，24小时累计位移12.3mm',
     value: '12.3mm/24h', time: '14:32', location: '北侧边坡-3#',
+    equipmentId: null, resolved: false,
   },
   {
     id: 'a2', type: 'critical', category: '粉尘浓度',
     message: '采场底部粉尘浓度达到45mg/m³，超过安全阈值',
     value: '45mg/m³', time: '13:18', location: '采场底部-C区',
+    equipmentId: null, resolved: false,
   },
   {
     id: 'a3', type: 'warning', category: '边坡位移',
     message: '东侧边坡1号监测点位移趋势上升，建议加密监测',
     value: '5.8mm/24h', time: '11:45', location: '东侧边坡-1#',
+    equipmentId: null, resolved: false,
   },
   {
     id: 'a4', type: 'warning', category: '设备告警',
     message: '矿卡-03发动机水温偏高，建议检查冷却系统',
     value: '98°C', time: '10:22', location: '3号运输路线',
+    equipmentId: 'truck-3', resolved: false,
   },
   {
     id: 'a5', type: 'info', category: '粉尘浓度',
     message: '西侧作业区粉尘浓度恢复正常范围',
     value: '18mg/m³', time: '09:15', location: '西侧作业区',
+    equipmentId: null, resolved: true,
   },
   {
     id: 'a6', type: 'info', category: '系统提示',
     message: '新增2号台阶爆破作业完成，已转入开采阶段',
     value: '', time: '08:30', location: '2号台阶',
+    equipmentId: null, resolved: true,
   },
   {
     id: 'a7', type: 'warning', category: '边坡位移',
     message: '南侧边坡2号监测点累计位移接近预警阈值',
     value: '8.1mm/24h', time: '07:50', location: '南侧边坡-2#',
+    equipmentId: null, resolved: false,
+  },
+  {
+    id: 'a8', type: 'critical', category: '设备告警',
+    message: '挖掘机-01液压系统压力异常，已自动停机',
+    value: '32MPa', time: '15:10', location: '3号台阶',
+    equipmentId: 'exc-1', resolved: false,
+  },
+  {
+    id: 'a9', type: 'warning', category: '设备告警',
+    message: '矿卡-02轮胎压力不足，建议尽快检查',
+    value: '0.6bar', time: '12:40', location: '1号运输路线',
+    equipmentId: 'truck-2', resolved: false,
+  },
+  {
+    id: 'a10', type: 'warning', category: '设备告警',
+    message: '挖掘机-03回转电机温度偏高',
+    value: '85°C', time: '09:55', location: '4号台阶',
+    equipmentId: 'exc-3', resolved: false,
   },
 ]
 

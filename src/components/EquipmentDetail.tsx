@@ -1,12 +1,16 @@
 import React from 'react'
-import { Equipment } from '../data/mockData'
+import { Equipment, Alert } from '../data/mockData'
 
 interface EquipmentDetailProps {
   equipment: Equipment
+  alerts: Alert[]
   onClose: () => void
 }
 
-export default function EquipmentDetail({ equipment, onClose }: EquipmentDetailProps) {
+export default function EquipmentDetail({ equipment, alerts, onClose }: EquipmentDetailProps) {
+  const relatedAlerts = alerts.filter((a) => a.equipmentId === equipment.id)
+  const unresolvedCount = relatedAlerts.filter((a) => !a.resolved).length
+
   return (
     <div
       className="detail-popup"
@@ -44,6 +48,33 @@ export default function EquipmentDetail({ equipment, onClose }: EquipmentDetailP
         <span className="label">作业台阶</span>
         <span className="value">第{equipment.terraceLevel + 1}层</span>
       </div>
+      <div className="detail-section-title">
+        关联告警
+        {unresolvedCount > 0 && (
+          <span className="detail-alert-badge">{unresolvedCount}</span>
+        )}
+      </div>
+      {relatedAlerts.length === 0 ? (
+        <div className="detail-no-alert">暂无关联告警</div>
+      ) : (
+        <div className="detail-alert-list">
+          {relatedAlerts.map((alert) => (
+            <div key={alert.id} className={`detail-alert-item ${alert.type} ${alert.resolved ? 'resolved' : ''}`}>
+              <div className={`detail-alert-type ${alert.type}`}>
+                {alert.type === 'critical' ? '严重' : alert.type === 'warning' ? '警告' : '信息'}
+                {' · '}
+                {alert.category}
+                {alert.resolved && <span className="detail-alert-resolved-tag">已处理</span>}
+              </div>
+              <div className="detail-alert-msg">{alert.message}</div>
+              <div className="detail-alert-meta">
+                <span>{alert.value}</span>
+                <span>{alert.time}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
